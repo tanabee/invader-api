@@ -63,7 +63,7 @@ exports.register = function(req, res) {
       res.json(500, err);
       return;
     }
-    res.json({ message: 'success' });
+    res.json(user);
   });
 };
 
