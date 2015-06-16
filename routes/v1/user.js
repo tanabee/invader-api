@@ -1,6 +1,9 @@
 var User = require('../../models/user'),
     async = require('async');
 
+/**
+ * トップ 100 のランキング取得
+ */
 exports.getRanking = function(req, res) {
   var conditions = {},
       projection = {
@@ -22,7 +25,20 @@ exports.getRanking = function(req, res) {
   });
 };
 
+/**
+ * ランキング取得
+ * @param req.query.score 自分のスコア
+ */
 exports.getRankingMe = function(req, res) {
+  var score = req.query.score;
+  // 自分のスコアより高いユーザーの数を取得
+  User.count({ score: { '$gt': score } }, function (err, count) {
+    if (err) {
+      res.jsonp(500, err);
+      return;
+    }
+    res.json({ ranking: count+1 });
+  });
 };
 
 /**
@@ -52,4 +68,13 @@ exports.register = function(req, res) {
 };
 
 exports.updateScore = function(req, res) {
+  var userId = req.params.userId;
+  var score  = req.body.score;
+  User.update({ _id: userId }, { score: score }, function (err, user) {
+    if (err) {
+      res.json(500, err);
+      return;
+    }
+    res.json({ message: 'success' });
+  });
 };
