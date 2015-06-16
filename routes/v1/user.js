@@ -7,6 +7,7 @@ exports.getRanking = function(req, res) {
         _id: false
       },
       options    = {
+        limit: 100,
         sort: {
           score: -1
         }
