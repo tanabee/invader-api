@@ -48,6 +48,13 @@ exports.getRankingMe = function(req, res) {
 exports.register = function(req, res) {
 
   var name = req.body.name;
+
+  // 名前が空の場合はエラーを返す
+  if (name.length === 0) {
+    res.json(400, { message: 'nickname is empty.' });
+    return;
+  }
+
   var user = new User({
     name: name
   });
